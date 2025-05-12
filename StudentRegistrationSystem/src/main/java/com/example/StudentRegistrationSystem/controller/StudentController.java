@@ -3,86 +3,78 @@ package com.example.StudentRegistrationSystem.controller;
 import com.example.StudentRegistrationSystem.model.Student;
 import com.example.StudentRegistrationSystem.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/students")
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+
+@Controller
 public class StudentController {
 
     @Autowired
     private StudentRepository studentRepository;
 
-    //create student
-    @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student){
-        System.out.println("Received student: " + student);  // Add this line to check if data is being received.
-        return new ResponseEntity<>(studentRepository.save(student), HttpStatus.CREATED);
+    // Showing form page
+    @GetMapping("/students/form")
+    public String showForm(Model model) {
+        model.addAttribute("student", new Student());
+        return "student_form";
     }
 
-    //read student (get all students)
-    @GetMapping
-    public List<Student> getAllStudents(){
-        return studentRepository.findAll();
-    }
-
-    //read student by id (get student by id)
-    @GetMapping("/{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable Long id){
-        Optional<Student> student = studentRepository.findById(id);
-
-        if(student.isPresent()){
-            return new ResponseEntity<>(student.get(), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    // Showing edit form
+    @GetMapping("/students/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+        if (optionalStudent.isPresent()) {
+            model.addAttribute("student", optionalStudent.get());
+            return "edit_student";
+        } else {
+            return "redirect:/students/list";
         }
     }
 
+    // create
+    @PostMapping("/students")
+    public String submitForm(@ModelAttribute Student student) {
+        studentRepository.save(student);
+        return "redirect:/students/list";
+    }
 
-    //update student
-    @PutMapping("/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestBody Student studentDetails){
 
+    // read
+    @GetMapping("/students/list")
+    public String viewStudents(Model model) {
+        List<Student> students = studentRepository.findAll();
+        model.addAttribute("students", students);
+        return "student_list";
+    }
+
+
+    // update/edit
+    @PostMapping("/students/update/{id}")
+    public String updateStudent(@PathVariable Long id, @ModelAttribute Student studentDetails) {
         Optional<Student> studentOptional = studentRepository.findById(id);
-
-        if(studentOptional.isPresent()){
-
+        System.out.println("Updating student: " + studentDetails);  // Debugging
+        if (studentOptional.isPresent()) {
             Student student = studentOptional.get();
             student.setName(studentDetails.getName());
             student.setDob(studentDetails.getDob());
             student.setCpi(studentDetails.getCpi());
-
-            return new ResponseEntity<>(studentRepository.save(student),HttpStatus.OK);
-
-        }else{
-
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+            studentRepository.save(student);
         }
-
+        return "redirect:/students/list";
     }
 
-    //delete student
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable Long id){
-
-        if(studentRepository.existsById(id)){
-
+    // delete
+    @GetMapping("/students/delete/{id}")
+    public String deleteStudent(@PathVariable Long id) {
+        if (studentRepository.existsById(id)) {
             studentRepository.deleteById(id);
-
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-        }else{
-
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
         }
+        return "redirect:/students/list";
     }
-
-
 
 }
