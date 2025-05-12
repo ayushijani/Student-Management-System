@@ -5,6 +5,7 @@ import com.example.StudentRegistrationSystem.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,18 +47,20 @@ public class StudentController {
 
     // read
     @GetMapping("/students/list")
-    public String viewStudents(Model model) {
+    public String listStudents(Model model) {
         List<Student> students = studentRepository.findAll();
+        students.sort(Comparator.comparing(Student::getId));
         model.addAttribute("students", students);
         return "student_list";
     }
+
 
 
     // update/edit
     @PostMapping("/students/update/{id}")
     public String updateStudent(@PathVariable Long id, @ModelAttribute Student studentDetails) {
         Optional<Student> studentOptional = studentRepository.findById(id);
-        System.out.println("Updating student: " + studentDetails);  // Debugging
+        System.out.println("Updating student: " + studentDetails);  // Debug
         if (studentOptional.isPresent()) {
             Student student = studentOptional.get();
             student.setName(studentDetails.getName());
