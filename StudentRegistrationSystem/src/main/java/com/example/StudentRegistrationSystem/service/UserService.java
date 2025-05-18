@@ -11,6 +11,15 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public User getUserByResetToken(String token) {
+        return userRepository.findByResetToken(token);
+    }
+
+
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }

@@ -14,6 +14,14 @@
     You have been logged out.
 </div>
 
+<div th:if="${param.reset}" style="color: green;">
+    Password has been reset successfully.
+</div>
+
+<div th:if="${param.changed}" style="color: green;">
+    Password has been changed successfully.
+</div>
+
 <form th:action="@{/auth/process-login}" method="post">
     <div>
         <label for="username">Username:</label>
@@ -25,6 +33,9 @@
     </div>
     <div>
         <button type="submit">Login</button>
+    </div>
+    <div>
+        <a th:href="@{/auth/forgot-password}">Forgot Password?</a>
     </div>
 </form>
 </body>
