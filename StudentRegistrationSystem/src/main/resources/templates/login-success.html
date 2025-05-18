@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login Success</title>
+</head>
+<body>
+<p th:if="${session.loggedInUser != null}"
+   th:text="'Welcome, ' + ${session.loggedInUser['username']}">
+    Welcome!
+</p>
+<a href="/auth/logout">Logout</a>
+</body>
+</html>

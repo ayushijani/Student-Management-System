@@ -8,7 +8,7 @@
 <body>
 <h2>Edit Student</h2>
 
-<form th:action="@{'/students/update/' + ${student.id}}" th:object="${student}" method="post">
+<form th:action="@{'/student/update/' + ${student.id}}" th:object="${student}" method="post">
     <label>ID: <input type="text" th:field="*{id}" readonly /></label><br>
     <label>Name: <input type="text" th:field="*{name}" /></label><br>
     <label>DOB: <input type="date" th:field="*{dob}" th:value="${#temporals.format(student.dob, 'yyyy-MM-dd')}" /></label><br>
@@ -16,6 +16,6 @@
     <button type="submit">Update</button>
 </form>
 
-<a th:href="@{/students/list}">Back to List</a>
+<a th:href="@{/student/list}">Back to List</a>
 </body>
 </html>

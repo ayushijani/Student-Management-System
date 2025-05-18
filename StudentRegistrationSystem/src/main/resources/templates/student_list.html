@@ -21,13 +21,13 @@
         <td th:text="${student.dob}"></td>
         <td th:text="${student.cpi}"></td>
         <td>
-            <a th:href="@{'/students/edit/' + ${student.id}}">Edit</a> |
-            <a th:href="@{'/students/delete/' + ${student.id}}" onclick="return confirm('Are you sure?')">Delete</a>
+            <a th:href="@{'/student/edit/' + ${student.id}}">Edit</a> |
+            <a th:href="@{'/student/delete/' + ${student.id}}" onclick="return confirm('Are you sure?')">Delete</a>
         </td>
     </tr>
 
 </table>
 
-<a th:href="@{/students/form}">Add New Student</a>
+<a th:href="@{/student/form}">Add New Student</a>
 </body>
 </html>

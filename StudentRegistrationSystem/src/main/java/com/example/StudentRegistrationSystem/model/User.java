@@ -13,6 +13,9 @@ import jakarta.persistence.Id;
 public class User {
     @Id
     private long userId;
+
+    private String username;
+
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -23,5 +26,6 @@ public class User {
     public enum Role {
         Student, Faculty, Admin
     }
+
 }
 

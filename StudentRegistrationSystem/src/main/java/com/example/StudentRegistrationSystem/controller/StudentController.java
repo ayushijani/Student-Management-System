@@ -13,40 +13,41 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 @Controller
+@RequestMapping("/student")
 public class StudentController {
 
     @Autowired
     private StudentRepository studentRepository;
 
     // Showing form page
-    @GetMapping("/students/form")
+    @GetMapping("/form")
     public String showForm(Model model) {
         model.addAttribute("student", new Student());
         return "student_form";
     }
 
     // Showing edit form
-    @GetMapping("/students/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Optional<Student> optionalStudent = studentRepository.findById(id);
         if (optionalStudent.isPresent()) {
             model.addAttribute("student", optionalStudent.get());
             return "edit_student";
         } else {
-            return "redirect:/students/list";
+            return "redirect:/student/list";
         }
     }
 
     // create
-    @PostMapping("/students")
+    @PostMapping
     public String submitForm(@ModelAttribute Student student) {
         studentRepository.save(student);
-        return "redirect:/students/list";
+        return "redirect:/student/list";
     }
 
 
     // read
-    @GetMapping("/students/list")
+    @GetMapping("/list")
     public String listStudents(Model model) {
         List<Student> students = studentRepository.findAll();
         students.sort(Comparator.comparing(Student::getId));
@@ -57,7 +58,7 @@ public class StudentController {
 
 
     // update/edit
-    @PostMapping("/students/update/{id}")
+    @PostMapping("/update/{id}")
     public String updateStudent(@PathVariable Long id, @ModelAttribute Student studentDetails) {
         Optional<Student> studentOptional = studentRepository.findById(id);
         System.out.println("Updating student: " + studentDetails);  // Debug
@@ -68,16 +69,16 @@ public class StudentController {
             student.setCpi(studentDetails.getCpi());
             studentRepository.save(student);
         }
-        return "redirect:/students/list";
+        return "redirect:/student/list";
     }
 
     // delete
-    @GetMapping("/students/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteStudent(@PathVariable Long id) {
         if (studentRepository.existsById(id)) {
             studentRepository.deleteById(id);
         }
-        return "redirect:/students/list";
+        return "redirect:/student/list";
     }
 
 }

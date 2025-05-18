@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Confirm Logout</title>
+</head>
+<body>
+<h2>Are you sure you want to logout?</h2>
+<form th:action="@{/perform-logout}" method="post">
+  <button type="submit">Yes, Logout</button>
+</form>
+<a href="/">Cancel</a>
+</body>
+</html>

@@ -8,7 +8,7 @@
 <body>
 <h2>Register Student</h2>
 
-<form th:action="@{/students}" th:object="${student}" method="post">
+<form th:action="@{/student}" th:object="${student}" method="post">
     <label>ID: <input type="text" th:field="*{id}" /></label><br>
     <label>Name: <input type="text" th:field="*{name}" /></label><br>
     <label>DOB: <input type="date" th:field="*{dob}" th:value="${#temporals.format(student.dob, 'yyyy-MM-dd')}" /></label><br>
@@ -16,6 +16,6 @@
     <button type="submit">Submit</button>
 </form>
 
-<a th:href="@{/students/list}">View All Students</a>
+<a th:href="@{/student/list}">View All Students</a>
 </body>
 </html>
